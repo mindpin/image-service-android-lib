@@ -85,6 +85,7 @@ public class MainActivity extends ListActivity {
     private List<? extends Map<String, ?>> getData() {
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
         addItem(data, "upload", UploadActivity.class);
+        addItem(data, "crop", CropActivity.class);
 //        addItem(data, "other", OtherActivity.class);
 
         return data;

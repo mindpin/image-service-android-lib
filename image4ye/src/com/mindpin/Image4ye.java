@@ -20,6 +20,10 @@ public class Image4ye {
     private static final String FORMAT_URL = "%s@%dw_%dh.png";
     public String url;
 
+    public Image4ye(String url) {
+        this.url = url;
+    }
+
     public String url(int width, int height, boolean crop) {
         if(crop)
             return String.format(FORMAT_URL_CROP, url, width, height);

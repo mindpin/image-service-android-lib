@@ -29,7 +29,8 @@
 			</intent-filter>
 		</activity>
         <activity android:name=".UploadActivity"/>
+        <activity android:name=".CropActivity"/>
 
-	</application>
+    </application>
 
 </manifest>
