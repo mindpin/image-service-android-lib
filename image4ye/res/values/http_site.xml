@@ -1,0 +1,4 @@
+<resources>
+    <!-- http_site 设置自己的开发服务器地址 -->
+    <string name="http_site">http://img.4ye.me</string>
+</resources>
