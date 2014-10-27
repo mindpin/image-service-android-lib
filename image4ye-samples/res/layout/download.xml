@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+        >
+    <Button android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="下载当前图片的裁剪图片"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/btn_download"
+            />
+    <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:layout_above="@id/btn_download"
+              android:id="@+id/et_url"
+              android:text="http://img.teamkn.com/i/PxuHBfoe.png"
+            />
+    <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
+               android:layout_alignParentTop="true"
+               android:layout_above="@id/et_url"
+               android:id="@+id/iv_image"
+            />
+</RelativeLayout>

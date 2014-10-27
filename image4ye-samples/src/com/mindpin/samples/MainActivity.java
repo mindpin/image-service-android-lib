@@ -86,7 +86,7 @@ public class MainActivity extends ListActivity {
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
         addItem(data, "upload", UploadActivity.class);
         addItem(data, "crop", CropActivity.class);
-//        addItem(data, "other", OtherActivity.class);
+        addItem(data, "download", DownloadActivity.class);
 
         return data;
     }

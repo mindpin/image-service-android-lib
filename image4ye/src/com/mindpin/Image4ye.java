@@ -2,15 +2,10 @@ package com.mindpin;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by dd on 14-10-24.
@@ -25,10 +20,10 @@ public class Image4ye {
     }
 
     public String url(int width, int height, boolean crop) {
-        if(crop)
+        if (crop)
             return String.format(FORMAT_URL_CROP, url, width, height);
         else
-            return String.format(FORMAT_URL,url, width, height);
+            return String.format(FORMAT_URL, url, width, height);
     }
 
     public static void upload(String image_file_path, Image4yeUploadListener listener) {
@@ -39,7 +34,19 @@ public class Image4ye {
             // todo raise
             return;
         }
-        new DownloadFilesTask().execute(param);
+        new UploadTask().execute(param);
+    }
+
+    public void download(int width, int height, boolean crop, Image4yeDownloadListener listener) {
+        if (TextUtils.isEmpty(url)) {
+            System.out.println("not image_path cancel upload");
+            // todo raise
+            return;
+        }
+        listener.start();
+        String url = url(width, height, crop);
+        Image4yeDownloadParam param = new Image4yeDownloadParam(url, listener);
+        new DownloadTask().execute(param);
     }
 
     public static interface Image4yeUploadListener {
@@ -48,8 +55,13 @@ public class Image4ye {
         public void end(Image4ye u);
     }
 
-    private static class Image4yeUploadParam {
+    public static interface Image4yeDownloadListener {
+        public void start();
 
+        public void end(File download_image_file);
+    }
+
+    private static class Image4yeUploadParam {
         public final String image_file_path;
         public final Image4yeUploadListener listener;
 
@@ -59,7 +71,40 @@ public class Image4ye {
         }
     }
 
-    private static class DownloadFilesTask extends AsyncTask<Image4yeUploadParam, Void, Image4ye> {
+    private static class Image4yeDownloadParam {
+        public final String url;
+        public final Image4yeDownloadListener listener;
+
+        public Image4yeDownloadParam(String url, Image4yeDownloadListener listener) {
+            this.url = url;
+            this.listener = listener;
+        }
+    }
+
+    private static class DownloadTask extends AsyncTask<Image4yeDownloadParam, Void, File> {
+        Image4yeDownloadParam param;
+
+        @Override
+        protected File doInBackground(Image4yeDownloadParam... params) {
+            param = params[0];
+            // todo download
+            File file = HttpApi.download(param.url);
+            return file;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+            super.onPostExecute(file);
+            param.listener.end(file);
+        }
+    }
+
+    private static class UploadTask extends AsyncTask<Image4yeUploadParam, Void, Image4ye> {
         Image4yeUploadParam param;
 
         @Override
