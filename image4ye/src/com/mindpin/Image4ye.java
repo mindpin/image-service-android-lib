@@ -1,7 +1,9 @@
 package com.mindpin;
 
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.gson.Gson;
 
@@ -87,7 +89,6 @@ public class Image4ye {
         @Override
         protected File doInBackground(Image4yeDownloadParam... params) {
             param = params[0];
-            // todo download
             File file = HttpApi.download(param.url);
             return file;
         }
@@ -128,6 +129,7 @@ public class Image4ye {
 
     private static class HttpApi {
         public static final String URL_UPLOAD = "http://img.4ye.me/api/upload";
+        private static final String TMP_PATH_DIR = "/image4ye/cache";
 
         public static Image4ye upload(String image_path) {
             HttpRequest request = HttpRequest.post(URL_UPLOAD);
@@ -137,6 +139,37 @@ public class Image4ye {
                 return new Gson().fromJson(body, Image4ye.class);
             } else
                 return null;
+        }
+
+        public static File download(String url) {
+            try {
+                File output = new File(get_tmp_path());
+                HttpRequest.get(url).receive(output);
+                return output;
+            } catch (Exception ex) {
+                return null;
+            }
+        }
+
+        private static String get_tmp_path() {
+            String tmp_dir_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                    TMP_PATH_DIR;
+            File file_dir = new File(tmp_dir_path);
+            if (file_dir.exists()) {
+                return tmp_dir_path + "/" + String.valueOf(System.currentTimeMillis());
+            } else {
+                try {
+                    boolean result = file_dir.mkdirs();
+                    if (result) {
+                        return tmp_dir_path + "/" + String.valueOf(System.currentTimeMillis());
+                    } else {
+                        Log.i("get_tmp_path", "目录创建失败");
+                    }
+                } catch (SecurityException se) {
+                    Log.i("get_tmp_path目录创建失败 ", se.toString());
+                }
+            }
+            return null;
         }
     }
 }

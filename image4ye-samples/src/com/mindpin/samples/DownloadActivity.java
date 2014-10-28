@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import com.mindpin.Image4ye;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -48,11 +49,17 @@ public class DownloadActivity extends Activity implements View.OnClickListener {
         // 下载
         u.download(width, height, crop, new Image4ye.Image4yeDownloadListener() {
             public void start() {
-                // 方法运行在 UI线程，做一些UI操作
+                Toast.makeText(DownloadActivity.this, "开始下载", Toast.LENGTH_LONG).show();
             }
 
             public void end(File download_image_file) {
-                // 方法运行在 UI线程，做一些UI操作
+                if (download_image_file == null) {
+                    Toast.makeText(DownloadActivity.this, "下载失败", Toast.LENGTH_LONG).show();
+                } else {
+                    String file_path = "file://" + download_image_file.getAbsolutePath();
+                    ImageLoader.getInstance().displayImage(file_path, iv_image);
+                    Toast.makeText(DownloadActivity.this, "已成功下载裁剪图片，并在当前图片控件显示", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
