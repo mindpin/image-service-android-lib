@@ -11,7 +11,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.mindpin.Image4ye;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import roboguice.util.RoboAsyncTask;
+
+import java.io.File;
 
 /**
  * Created by dd on 14-7-20.
@@ -34,12 +35,10 @@ public class UploadActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_upload:
                 choose_image();
                 break;
-//            case R.id.iv_image:
-//                break;
         }
     }
 
@@ -53,37 +52,40 @@ public class UploadActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case GET_IMAGE_FROM_ALBUM:
-                    if (null != data) {
+        if (resultCode == RESULT_OK && requestCode == GET_IMAGE_FROM_ALBUM && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
 
-                        Cursor cursor = getContentResolver().query(selectedImage,
-                                filePathColumn, null, null, null);
-                        cursor.moveToFirst();
-
-                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        String picturePath = cursor.getString(columnIndex);
-                        cursor.close();
-                        upload_image(picturePath);
-                    }
-                    break;
-            }
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            upload_image(picturePath);
         }
     }
 
     private void upload_image(final String image_path) {
         if (image_path == null) {
-            System.out.println("not image_path cancel upload");
+            Toast.makeText(UploadActivity.this, "图片路径为空，取消上传" + image_path, Toast.LENGTH_LONG).show();
             return;
         }
-        Image4ye.upload(image_path, new Image4ye.Image4yeUploadListener() {
+
+        File image_file;
+        try {
+            image_file = new File(image_path);
+        } catch (Exception ex) {
+            Toast.makeText(UploadActivity.this, "打开文件失败:" + image_path, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Image4ye.upload(image_file, new Image4ye.Image4yeUploadListener() {
             @Override
             public void start() {
-                Toast.makeText(UploadActivity.this, "开始上传" + image_path, Toast.LENGTH_LONG).show();
+                // 方法运行在 UI线程，做一些UI操作
+                Toast.makeText(UploadActivity.this, "开始上传,image_path:" + image_path, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -91,16 +93,13 @@ public class UploadActivity extends Activity implements View.OnClickListener {
                 // 方法运行在 UI线程，做一些UI操作
                 // 拿到 url
                 String url = u.url;
-                System.out.println("u.url:" + url);
-
                 int width = 100;
                 int height = 100;
                 boolean crop = true;
                 // 拿到指定尺寸的 url
                 String crop_url = u.url(width, height, crop);
-                Toast.makeText(UploadActivity.this, "crop_url:" + crop_url, Toast.LENGTH_LONG).show();
-                System.out.println("crop_url:" + crop_url);
                 ImageLoader.getInstance().displayImage(crop_url, iv_image);
+                Toast.makeText(UploadActivity.this, "上传成功,crop url:" + crop_url, Toast.LENGTH_LONG).show();
             }
         });
     }

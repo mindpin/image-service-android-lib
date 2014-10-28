@@ -28,14 +28,9 @@ public class Image4ye {
             return String.format(FORMAT_URL, url, width, height);
     }
 
-    public static void upload(String image_file_path, Image4yeUploadListener listener) {
+    public static void upload(File image_file, Image4yeUploadListener listener) {
         listener.start();
-        Image4yeUploadParam param = new Image4yeUploadParam(image_file_path, listener);
-        if (TextUtils.isEmpty(image_file_path)) {
-            System.out.println("not image_path cancel upload");
-            // todo raise
-            return;
-        }
+        Image4yeUploadParam param = new Image4yeUploadParam(image_file, listener);
         new UploadTask().execute(param);
     }
 
@@ -64,11 +59,11 @@ public class Image4ye {
     }
 
     private static class Image4yeUploadParam {
-        public final String image_file_path;
+        public final File image_file;
         public final Image4yeUploadListener listener;
 
-        public Image4yeUploadParam(String image_file_path, Image4yeUploadListener listener) {
-            this.image_file_path = image_file_path;
+        public Image4yeUploadParam(File image_file, Image4yeUploadListener listener) {
+            this.image_file = image_file;
             this.listener = listener;
         }
     }
@@ -111,7 +106,7 @@ public class Image4ye {
         @Override
         protected Image4ye doInBackground(Image4yeUploadParam... params) {
             param = params[0];
-            Image4ye image4ye = HttpApi.upload(param.image_file_path);
+            Image4ye image4ye = HttpApi.upload(param.image_file);
             return image4ye;
         }
 
@@ -131,9 +126,9 @@ public class Image4ye {
         public static final String URL_UPLOAD = "http://img.4ye.me/api/upload";
         private static final String TMP_PATH_DIR = "/image4ye/cache";
 
-        public static Image4ye upload(String image_path) {
+        public static Image4ye upload(File image_file) {
             HttpRequest request = HttpRequest.post(URL_UPLOAD);
-            request.part("file", image_path, new File(image_path));
+            request.part("file", image_file.getPath(), image_file);
             if (request.ok()) {
                 String body = request.body();
                 return new Gson().fromJson(body, Image4ye.class);
