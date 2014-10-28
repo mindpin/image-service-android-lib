@@ -4,7 +4,7 @@ image-service-android 核心逻辑抽取的Android库
 
 如何引用此组件：
 -------------
-** 安装 **
+**安装**
 
 ```
 git clone https://github.com/mindpin/image-service-android-lib
@@ -12,7 +12,7 @@ cd image-service-android-lib
 mvn clean install
 ```
 
-** maven引用 **
+**maven引用**
 
 在maven项目，pom.xml添加以下依赖引用：
 
@@ -25,7 +25,7 @@ mvn clean install
 </dependency>
 ```
 
-** android权限设置 **
+**android权限设置**
 AndroidManifest.xml 添加如下权限
 ```
     <uses-permission android:name="android.permission.INTERNET" />
