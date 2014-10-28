@@ -48,7 +48,6 @@ public class UploadActivity extends Activity implements View.OnClickListener {
         startActivityForResult(i, GET_IMAGE_FROM_ALBUM);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

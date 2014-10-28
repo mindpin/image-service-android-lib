@@ -32,19 +32,20 @@ public class CropActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_crop){
+        if (v.getId() == R.id.btn_crop) {
             crop();
         }
     }
 
     private void crop() {
-        Image4ye image4ye = new Image4ye(et_url.getText().toString());
+        String url = et_url.getText().toString();
+        Image4ye image4ye = new Image4ye(url);
         int width = 100;
         int height = 100;
         boolean crop = true;
         // 拿到指定尺寸的 url
         String crop_url = image4ye.url(width, height, crop);
-        Toast.makeText(this, crop_url, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "裁剪之后的url为" + crop_url, Toast.LENGTH_LONG).show();
         ImageLoader.getInstance().displayImage(crop_url, iv_image);
     }
 }

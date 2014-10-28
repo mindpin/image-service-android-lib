@@ -29,6 +29,10 @@ public class Image4ye {
     }
 
     public static void upload(File image_file, Image4yeUploadListener listener) {
+        if (image_file == null) {
+            System.out.println("not image_file cancel upload");
+            throw new NullPointerException("image_file is null");
+        }
         listener.start();
         Image4yeUploadParam param = new Image4yeUploadParam(image_file, listener);
         new UploadTask().execute(param);
@@ -36,9 +40,8 @@ public class Image4ye {
 
     public void download(int width, int height, boolean crop, Image4yeDownloadListener listener) {
         if (TextUtils.isEmpty(url)) {
-            System.out.println("not image_path cancel upload");
-            // todo raise
-            return;
+            System.out.println("not url cancel download");
+            throw new NullPointerException("url is null");
         }
         listener.start();
         String url = url(width, height, crop);
@@ -137,13 +140,9 @@ public class Image4ye {
         }
 
         public static File download(String url) {
-            try {
-                File output = new File(get_tmp_path());
-                HttpRequest.get(url).receive(output);
-                return output;
-            } catch (Exception ex) {
-                return null;
-            }
+            File output = new File(get_tmp_path());
+            HttpRequest.get(url).receive(output);
+            return output;
         }
 
         private static String get_tmp_path() {
