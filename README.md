@@ -6,6 +6,14 @@ image-service-android 核心逻辑抽取的Android库
 -------------
 **安装**
 
+先安装java版本
+```
+git clone https://github.com/mindpin/image-service-java-lib
+cd image-service-java-lib
+mvn clean install
+```
+
+然后安装android版本(android版本依赖于Java版本)
 ```
 git clone https://github.com/mindpin/image-service-android-lib
 cd image-service-android-lib

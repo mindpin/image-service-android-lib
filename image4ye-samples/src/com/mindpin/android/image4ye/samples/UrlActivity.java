@@ -1,4 +1,4 @@
-package com.mindpin.samples;
+package com.mindpin.android.image4ye.samples;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,13 +6,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.mindpin.Image4ye;
+import com.mindpin.android.image4ye.Image4ye;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by dd on 14-10-24.
  */
-public class CropActivity extends Activity implements View.OnClickListener {
+public class UrlActivity extends Activity implements View.OnClickListener {
     private ImageView iv_image;
     private EditText et_url;
 

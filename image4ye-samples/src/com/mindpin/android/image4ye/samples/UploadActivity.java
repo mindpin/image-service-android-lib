@@ -1,4 +1,4 @@
-package com.mindpin.samples;
+package com.mindpin.android.image4ye.samples;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.mindpin.Image4ye;
+import com.mindpin.android.image4ye.Image4ye;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
@@ -91,7 +91,7 @@ public class UploadActivity extends Activity implements View.OnClickListener {
             public void end(Image4ye u) {
                 // 方法运行在 UI线程，做一些UI操作
                 // 拿到 url
-                String url = u.url;
+//                String url = u.url;
                 int width = 100;
                 int height = 100;
                 boolean crop = true;

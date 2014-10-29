@@ -1,4 +1,4 @@
-package com.mindpin.samples;
+package com.mindpin.android.image4ye.samples;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -83,7 +83,7 @@ public class MainActivity extends ListActivity {
     private List<? extends Map<String, ?>> getData() {
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
         addItem(data, "upload", UploadActivity.class);
-        addItem(data, "crop", CropActivity.class);
+        addItem(data, "url", UrlActivity.class);
         addItem(data, "download", DownloadActivity.class);
 
         return data;
